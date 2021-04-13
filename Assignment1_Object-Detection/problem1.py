@@ -9,26 +9,24 @@
 
 import cv2
 import sys
-
-from src.ROIDetector import ROIDetector
+import numpy
 
 REF_IMG = "ressources/test-image.jpg"
 
-def extractObj(img):
-    return img
+# if need to remove background: https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
-def saveRefImg():
-    roiDetector = ROIDetector()
+def saveROI():
     refImg = cv2.imread(REF_IMG, cv2.IMREAD_COLOR)
-    if (roiDetector.askRoi(refImg) == 0): # everything went good with roi
-        rois = roiDetector.crop(refImg)
-        for i, roi in enumerate(rois):
-            cv2.imwrite("ressources/template-" + str(i + 1) + ".jpg", extractObj(roi))
+    # select roi
+    roi = cv2.selectROI(refImg)
+    if (roi[0] != 0 and roi[1] != 0 and roi[2] != 0 and roi[3] != 0): # everything went good with roi
+        imgCrop = refImg[int(roi[1]):int(roi[1]+roi[3]), int(roi[0]):int(roi[0]+roi[2])]
+        cv2.imwrite("ressources/template.jpg", imgCrop)
 
 def main():
     av = sys.argv
     if (len(av) > 1 and (av[1] == "--extract" or av[1] == "-e")):
-        saveRefImg()
+        saveROI()
     return 0
 
 if __name__ == "__main__":
