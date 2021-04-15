@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 #
 # Created on Mon Apr 12 2021
 #
@@ -11,7 +10,10 @@ import cv2
 import sys
 import numpy
 
+from src.Matcher import Matcher
+
 REF_IMG = "ressources/test-image.jpg"
+TEMPLATE = "ressources/template.jpg"
 
 # if need to remove background: https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
@@ -27,6 +29,10 @@ def main():
     av = sys.argv
     if (len(av) > 1 and (av[1] == "--extract" or av[1] == "-e")):
         saveROI()
+    else:
+        mtch = Matcher()
+        cv2.imshow("Matches", mtch.match(REF_IMG, TEMPLATE))
+        cv2.waitKey()
     return 0
 
 if __name__ == "__main__":
