@@ -10,6 +10,7 @@ import cv2
 
 class Matcher():
     def __init__(self):
+        # use sift since surf is not available in pip package of opencv
         self.sift = cv2.SIFT_create()
         # FLANN parameters
         FLANN_INDEX_KDTREE = 0
