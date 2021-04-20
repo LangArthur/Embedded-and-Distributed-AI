@@ -19,12 +19,8 @@ def main():
     if (len(av) != 2):
         help()
         return (1)
-    # detect = PersonDetector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names")
-    # img = cv2.imread(av[1])
-    img=av[1]
-    detect = PersonDetector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names", img)
-    # cv2.imshow("readed", img)
-    detect.countPeople()
+    detect = PersonDetector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names")
+    detect.countPeople(av[1])
     return 0
 
 if __name__ == "__main__":
