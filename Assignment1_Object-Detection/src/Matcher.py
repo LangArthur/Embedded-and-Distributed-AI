@@ -8,7 +8,10 @@
 
 import cv2
 
+# @Class Matcher
+# match a picture inside another one.
 class Matcher():
+
     def __init__(self):
         # use sift since surf is not available in pip package of opencv
         self.sift = cv2.SIFT_create()
@@ -17,10 +20,19 @@ class Matcher():
         self._matcher = cv2.FlannBasedMatcher(dict(algorithm = FLANN_INDEX_KDTREE, trees = 5), dict(checks=50))
         self._lowesRatioConstant = 0.7 # value taken from Opencv Tutorials
 
+    # @method match
+    # match a picture into another one
+    # @param refImg: image in which the other picture has to be found.
+    # @param template: picture to found in refImg
+    # @return picture of the match
     def match(self, refImg, template):
         # read Pictures
         toMatch = cv2.imread(template, cv2.IMREAD_GRAYSCALE)
+        if (toMatch is None):
+            raise RuntimeError("Error: Can't read image to match.")
         refImg = cv2.imread(refImg, cv2.IMREAD_GRAYSCALE)
+        if (refImg is None):
+            raise RuntimeError("Error: Can't read reference image.")
         # find the keypoints and descriptors
         toMatchKp, toMatchDes = self.sift.detectAndCompute(toMatch, None)
         refKp, refDes = self.sift.detectAndCompute(refImg, None)

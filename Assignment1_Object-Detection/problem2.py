@@ -12,7 +12,7 @@ import cv2
 from src.PersonDetector import PersonDetector
 
 def help():
-    print("Usage: ./problem2 imgPath")
+    print("Usage: ./problem2 imgPath\nDetect the number of person on imgPath.")
 
 def main():
     av = sys.argv

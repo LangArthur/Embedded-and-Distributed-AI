@@ -15,8 +15,8 @@ from src.Matcher import Matcher
 REF_IMG = "ressources/test-image.jpg"
 TEMPLATE = "ressources/template.jpg"
 
-# if need to remove background: https://towardsdatascience.com/background-removal-with-python-b61671d1508a
-
+# @function saveRoi
+# save roi as a file
 def saveROI():
     refImg = cv2.imread(REF_IMG, cv2.IMREAD_COLOR)
     # select roi
