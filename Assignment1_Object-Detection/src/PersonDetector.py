@@ -13,14 +13,14 @@ import numpy as np
 # a class that allow to detect persons
 class PersonDetector():
 
-    def __init__(self, weight, config, classes, detection = "person"):
+    def __init__(self, weight, config, classes):
         # load model
         self.model = cv2.dnn.readNet(weight, config=config)
         # get classes detected by the loaded network
         self.classes = None
         with open('darknet/coco.names', 'r') as f:
             self.classes = [line.strip() for line in f.readlines()]
-        self.detection = detection
+        self.detection = "person"
 
     # @method _getPrediction
     # @return all the object detected in the scene.
@@ -82,6 +82,6 @@ class PersonDetector():
                 cv2.putText(image, label, (round(box[0]) - 10, round(box[1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
                 nrOfPeople += 1
         cv2.imshow("People detection", image)
-        print('There are {} {} in the image'.format(nrOfPeople, self.detection))
+        print('There {} {} {} in the image.'.format(("are" if nrOfPeople > 1 else "is"), nrOfPeople, self.detection + ("s" if nrOfPeople > 1 else "")))
         cv2.waitKey()
         return nrOfPeople
