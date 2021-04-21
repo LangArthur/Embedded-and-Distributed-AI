@@ -9,7 +9,7 @@ In each assignment folders, you can find a requirements.txt with all the needed 
 pip install -r requirements.txt
 ```
 
-For the assignment 2, we were not able to upload weights for the model. To do so, download the weights, config and names from Yolov3 and place them in a folder Assignment1_Object-Detection/darknet/ (to the teacher: we copied the weights from the workshop n°2. If it's not exaclty weights from Yolov3, can you warn us about the specificity of your weights?).
+For the assignment 1, in the problem 2, we were not able to upload weights for the model, due to github size limitation. To make it work, download the weights, config and names from Yolov3 and place them in a folder Assignment1_Object-Detection/darknet/ (to the teacher: we copied the weights from the workshop n°2. If it's not exaclty weights from Yolov3, can you warn us about the specificity of your weights?).
 
 ## Assignment 1: Object detection
 
@@ -27,7 +27,7 @@ This project detect the number of person on a picture, specified in parameter of
 
 We provide different pictures to test the algorithm. The picture "too_many_persons.jpg" show the limitation of the algorithm: when peoples are too much hide or too far, the algorithm did not detect them.
 
-## Bonus
+### Bonus
 
 In bonus, you can specify, in the constructor of the Detector (problem 2), the target you want to detect. We supplied a picture, 2persons-bicycle.jpg, on which you can change the detection and only detect bicyles:
 ```
