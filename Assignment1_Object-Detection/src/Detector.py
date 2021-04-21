@@ -13,6 +13,11 @@ import numpy as np
 # a class that allow to detect persons
 class Detector():
 
+    # @constructor
+    # @param weight: path for the weights file
+    # @param config: path for the model configuration
+    # @param calsses: path fot the file containing all the detected classes
+    # @param target: the target you want to detect. It should be the same as in the classes file.
     def __init__(self, weight, config, classes, target="person"):
         # load model
         self.model = cv2.dnn.readNet(weight, config=config)
@@ -24,6 +29,12 @@ class Detector():
             self.target = target
         else:
             raise ValueError("Error: the specify target is not detectable by the model ")
+
+    def updateTarget(self, target):
+        if target in self.classes:
+            self.target = target
+        else:
+            print("Error: " + target + " is not a valid target. Keep the previous one: " + self.target  + ".", file=sys.stderr)
 
     # @method _getPrediction
     # @return all the object detected in the scene.
@@ -76,7 +87,6 @@ class Detector():
         outs = self._getPrediction(image)
         indices, boxes, class_ids,  = self._getBoxes(outs, image.shape[1], image.shape[0])
         nrOfPeople = 0
-        print(indices)
         for i in indices:
             i = i[0]
             box = boxes[i]

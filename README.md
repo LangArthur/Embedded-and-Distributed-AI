@@ -23,7 +23,7 @@ Pictures are given inside the repository, but you can create your own templates 
 
 ### problem 2: Person detection
 
-This project detect the number of person on a picture.
+This project detect the number of person on a picture, specified in parameter of the program.
 
 We provide different pictures to test the algorithm. The picture "too_many_persons.jpg" show the limitation of the algorithm: when peoples are too much hide or too far, the algorithm did not detect them.
 
@@ -33,6 +33,8 @@ In bonus, you can specify, in the constructor of the Detector (problem 2), the t
 ```
 detect = Detector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names", "bicycle")
 ```
+
+or use the setter updateTarget("bicycle").
 
 ## Authors
 
