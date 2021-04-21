@@ -9,7 +9,7 @@
 import sys
 import cv2
 
-from src.PersonDetector import PersonDetector
+from src.Detector import Detector
 
 def help():
     print("Usage: ./problem2 imgPath\nDetect the number of person on imgPath.")
@@ -19,8 +19,8 @@ def main():
     if (len(av) != 2):
         help()
         return (1)
-    detect = PersonDetector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names")
-    detect.countPeople(av[1])
+    detect = Detector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.names")
+    detect.count(av[1])
     return 0
 
 if __name__ == "__main__":

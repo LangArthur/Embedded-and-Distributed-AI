@@ -2,25 +2,28 @@
 # Created on Mon Apr 19 2021
 #
 # Arthur Lang
-# PersonDetector.py
+# Detector.py
 #
 
 import sys
 import cv2
 import numpy as np
 
-# @class PersonDetector
+# @class Detector
 # a class that allow to detect persons
-class PersonDetector():
+class Detector():
 
-    def __init__(self, weight, config, classes):
+    def __init__(self, weight, config, classes, target="person"):
         # load model
         self.model = cv2.dnn.readNet(weight, config=config)
         # get classes detected by the loaded network
         self.classes = None
         with open('darknet/coco.names', 'r') as f:
             self.classes = [line.strip() for line in f.readlines()]
-        self.detection = "person"
+        if (target in self.classes):
+            self.target = target
+        else:
+            raise ValueError("Error: the specify target is not detectable by the model ")
 
     # @method _getPrediction
     # @return all the object detected in the scene.
@@ -56,14 +59,14 @@ class PersonDetector():
                     class_ids.append(class_id)
                     confidences.append(float(confidence))
                     boxes.append([x, y, w, h])
-        indices = cv2.dnn.NMSBoxes(boxes, confidences, 0.1, 0.1)
+        indices = cv2.dnn.NMSBoxes(boxes, confidences, 0.3, 0.3)
         return indices, boxes, class_ids
 
-    # @method countPeople
+    # @method count
     # count number of people on an image and display them
     # @param imagePath: path of the image with persons
     # @return number of people or -1 in case of error
-    def countPeople(self, imagePath):
+    def count(self, imagePath):
         # read picture
         image = cv2.imread(imagePath)
         if image is None:
@@ -73,15 +76,16 @@ class PersonDetector():
         outs = self._getPrediction(image)
         indices, boxes, class_ids,  = self._getBoxes(outs, image.shape[1], image.shape[0])
         nrOfPeople = 0
+        print(indices)
         for i in indices:
             i = i[0]
             box = boxes[i]
-            if self.classes[class_ids[i]] == self.detection:
-                label = str(self.detection)
+            if self.classes[class_ids[i]] == self.target:
+                label = str(self.target)
                 cv2.rectangle(image, (round(box[0]), round(box[1])), (round(box[0] + box[2]),round(box[1] + box[3])), (0, 0, 0), 2)
                 cv2.putText(image, label, (round(box[0]) - 10, round(box[1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
                 nrOfPeople += 1
-        cv2.imshow("People detection", image)
-        print('There {} {} {} in the image.'.format(("are" if nrOfPeople > 1 else "is"), nrOfPeople, self.detection + ("s" if nrOfPeople > 1 else "")))
+        cv2.imshow("Detection", image)
+        print('There {} {} {} in the image.'.format(("are" if nrOfPeople > 1 else "is"), nrOfPeople, self.target + ("s" if nrOfPeople > 1 else "")))
         cv2.waitKey()
         return nrOfPeople
