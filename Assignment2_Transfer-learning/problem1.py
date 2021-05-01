@@ -7,35 +7,19 @@
 #
 
 import os
-
 import tensorflow
-from tensorflow import keras
 
-def buildModel():
-    model = keras.Sequential([
-        keras.Input(shape=(25, 25)), # need to be change depending on the dataset
-        keras.layers.Dense(3, activation="relu")
-    ])
-    return model
-
-def preTraining():
-    pass
-
-def transferLearning():
-    pass
-
-# if we have the time to
-def fineTuning():
-    pass
+from src.Model import Model
 
 def checkGPU():
     if tensorflow.test.gpu_device_name():
-        print('GPU found')
+        print('\033[94mGPU found\033[0m')
     else:
-        print('No GPU found')
+        print('\033[94mNo GPU found\033[0m')
 
 def main():
     checkGPU()
+    model = Model()
     return 0
 
 if __name__ == '__main__':
