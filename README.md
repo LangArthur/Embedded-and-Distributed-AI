@@ -51,7 +51,7 @@ Pre-trained model: "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/featu
 The model from the Problem 1 was converted into a TF Lite model. The sized of the model was reduced from 18.7 MB to 16 MB. The compressed model classifies a single image in 0.07 and has an accuracy of 85.08%.
 
 
-In order to run the Google Colab notebook, the output folder which contains the train, test and validation dataset has to be unzipped and the path of the folder has to be specified in the parameters.
+In order to run the Google Colab notebook, the output folder which contains the train, test and validation dataset has to be unzipped and the path of the folder has to be specified in the parameters. The uncompressed model can be found in  "\Models\1620048460" and the TF lite model can be found in "\Models\model.tflite". The full path of this models has to be specified in the notebook also.
 
 
 
