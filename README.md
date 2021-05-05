@@ -42,7 +42,7 @@ This assignment uses transfer learning and the TFLite Converter/Interpreter to c
 
 ### Problem 1: Transfer Learning
 
-In this problem, a  headless pre-trained model from TensorFlow Hub (is used for creating a classifier for German Traffic Sign Dataset. For this task, the first 6 classes from the dataset were used in order to reduce the complexity. The accuracy of the model on test dataset is 0.86.
+In this problem, a headless pre-trained model from TensorFlow Hub is used for creating a classifier for German Traffic Sign Dataset. For this task, the first 6 classes from the dataset were used in order to reduce the complexity. The accuracy of the model on test dataset is 0.86.
 
 Pre-trained model: "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/feature_vector/5"
 
