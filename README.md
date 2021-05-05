@@ -36,6 +36,25 @@ detect = Detector("darknet/yolov3.weights", "darknet/yolov3.cfg", "darknet/coco.
 
 or use the setter updateTarget("bicycle").
 
+## Assignment 2: Transfer Learning and Model Compression
+
+This assignment uses transfer learning and the TFLite Converter/Interpreter to create a "traffic sign" classifier. The assignment is divided into 2 parts.
+
+### Problem 1: Transfer Learning
+
+In this problem, a  headless pre-trained model from TensorFlow Hub (is used for creating a classifier for German Traffic Sign Dataset. For this task, the first 6 classes from the dataset were used in order to reduce the complexity. The accuracy of the model on test dataset is 0.86.
+
+Pre-trained model: "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/feature_vector/5"
+
+### Problem 2: Model Compression
+
+The model from the Problem 1 was converted into a TF Lite model. The sized of the model was reduced from 18.7 MB to 16 MB. The compressed model classifies a single image in 0.07 and has an accuracy of 85.08%.
+
+
+In order to run the Google Colab notebook, the output folder which contains the train, test and validation dataset has to be unzipped and the path of the folder has to be specified in the parameters.
+
+
+
 ## Authors
 
 * **Arthur LANG** - *Initial work* - [LangArthur](https://github.com/LangArthur)
