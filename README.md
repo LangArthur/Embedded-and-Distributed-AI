@@ -16,7 +16,7 @@ In the problem 2, we were not able to upload weights for the model, due to githu
 ### Assignment 2
 
 The assignment is composed by a python notebook.
-In order to run in on Google Colab, the folder called "output" which contains the train, test and validation dataset has to be unzipped and the path of this folder has to be specified in the parameters.
+In order to run the notebook in Google Colab, the folder called "output" which contains the train, test and validation dataset has to be unzipped and the path of the folder has to be specified in the parameters. The uncompressed model can be found in  "\Models\1620048460" and the TF lite model can be found in "\Models\model.tflite". The full path of these models has to be specified in the notebook also.
 
 ## Assignment 1: Object detection
 
@@ -49,7 +49,7 @@ This assignment uses transfer learning and the TFLite Converter/Interpreter to c
 
 ### Problem 1: Transfer Learning
 
-In this problem, a  headless pre-trained model from TensorFlow Hub (is used for creating a classifier for German Traffic Sign Dataset. For this task, the first 6 classes from the dataset were used in order to reduce the complexity. The accuracy of the model on test dataset is 0.86.
+In this problem, a headless pre-trained model from TensorFlow Hub is used for creating a classifier for German Traffic Sign Dataset. For this task, the first 6 classes from the dataset were used in order to reduce the complexity. The accuracy of the model on test dataset is 0.86.
 
 Pre-trained model: "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/feature_vector/5"
 
