@@ -73,14 +73,14 @@ The model from the Problem 1 was converted into a TF Lite model. The sized of th
 
 This assignment simulate reading data from Iphone barometer.
 
-It is compose by tree elements:
+It is compose by three elements:
 - publisher: the element that publish data from a simulate barometer.
 - subscriber: the element who subscribe and read the data from an mqtt server. The generated graph is store in the file presurre.ttf.
 - query: the element that read the value from presurre.ttf file and order them by date.
 
 ### Bonus
 
-In bonus, we add a timeout for the subscriber, since it should stop after 10 messages, we thought that is a message is lost for any reason, the subscriber should still stop after a while.
+In bonus, we add a timeout for the subscriber, since it should stop after 10 messages, we thought that if a message is lost for any reason, the subscriber should still stop after a certain timeout (by default 30 seconds here).
 
 ## Authors
 
