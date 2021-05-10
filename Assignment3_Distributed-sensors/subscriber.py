@@ -20,7 +20,7 @@ class Subscriber():
         self.client = mqtt.Client("Subscriber")
         self.client.on_message = self.msgCallBack
         self.channel = "teds20/group07/pressure"
-        self.timeout = 5
+        self.timeout = 3
         self.lastActivity = time.time()
         self.mutex = Lock()
         self.isRunning = False
@@ -43,7 +43,7 @@ class Subscriber():
             print("Ready to listen.")
             while (self.isRunning):
                 self.mutex.acquire()
-                if (time.time() - self.lastActivity < self.timeout):
+                if (time.time() - self.lastActivity > self.timeout):
                     self.isRunning = False
                 self.mutex.release()
                 time.sleep(0.1) # set framerate to avoid too many loop execution
