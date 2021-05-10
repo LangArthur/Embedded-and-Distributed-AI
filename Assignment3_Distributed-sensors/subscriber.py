@@ -97,8 +97,9 @@ class Subscriber():
         self.nbrMsg += 1
         self.lastActivity = time.time()
         self.mutex.release()
-        [reading, dt] = message.payload.decode('utf-8').split('|')
-        self.publishInGraph(reading, dt)
+        if (self.nbrMsg <= 10):
+            [reading, dt] = message.payload.decode('utf-8').split('|')
+            self.publishInGraph(reading, dt)
 
     # @run
     # function to start the subscriber
