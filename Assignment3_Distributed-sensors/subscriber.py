@@ -17,34 +17,76 @@ from threading import Lock
 
 MQT_SERVER = "test.mosquitto.org"
 
+QUDT11 = Namespace("http://qudt.org/1.1/schema/qudt#")
+QUDTU11 = Namespace("http://qudt.org/1.1/vocab/unit#")
+CDT = Namespace("http://w3id.org/lindt/custom_datatypes#")
+BASE = Namespace("http://example.org/data/") #TODO set this as a base
+
 class Subscriber():
 
     def __init__(self):
         self.client = mqtt.Client("Subscriber")
         self.client.on_message = self.msgCallBack
         self.channel = "teds20/group07/pressure"
-        self.timeout = 300
+        self.timeout = 5
         self.lastActivity = time.time()
         self.mutex = Lock()
         self.isRunning = False
         self.graph = Graph()
         self.initGraph()
+        self.nbrMsg = 0
+        self.lastObsId = 1
 
-    def initGraph(self):
+    def setGraphNamespace(self):
+        self.graph.base = BASE
         self.graph.bind('rdf', RDF)
         self.graph.bind('rdfs', RDFS)
         self.graph.bind('xsd', XSD)
         self.graph.bind('sosa', SOSA)
-        print(self.graph.serialize(format='ttl').decode('u8'))
+        self.graph.bind('qudt-1-1', QUDT11)
+        self.graph.bind('qudt-unit-1-1', QUDTU11)
+        self.graph.bind('cdt', CDT)
+
+    def setGraphType(self):
+        # add earthAtmosphere
+        self.earthAtmosphere = URIRef('earthAtmosphere')
+        self.graph.add((self.earthAtmosphere, RDF.type, SOSA.FeatureOfInterest))
+        self.graph.add((self.earthAtmosphere, RDFS.label, Literal("Atmosphere of Earth", lang='en')))
+        # add sensor
+        self.sensor = URIRef('sensor/35-207306-844818-0/BMP282')
+        self.graph.add((self.sensor, RDF.type, SOSA.Sensor))
+        self.graph.add((self.sensor, RDFS.label, Literal("Bosch Sensortec BMP282", lang='en')))
+        sensorObs = URIRef('sensor/35-207306-844818-0/BMP282/atmosphericPressure')
+        self.graph.add((self.sensor, SOSA.observers, sensorObs))
+        # add Iphone
+        self.iphone = URIRef('iphone7/35-207306-844818-0')
+        self.graph.add((self.iphone, RDF.type, SOSA.Platform))
+        self.graph.add((self.iphone, RDFS.label, Literal("IPhone 7 - IMEI 35-207306-844818-0", lang='en')))
+        self.graph.add((self.iphone, RDFS.comment, Literal("IPhone 7 - IMEI 35-207306-844818-0 - John Doe", lang='en')))
+        self.graph.add((self.iphone, SOSA.hosts, self.sensor))
+
+    def initGraph(self):
+        self.setGraphNamespace() # set all different namespace
+        self.setGraphType() # set all types
+
+    def publishInGraph(self, value, time):
+        obs = URIRef('Observation/' + str(self.lastObsId))
+        sensorObs = URIRef('sensor/35-207306-844818-0/BMP282/atmosphericPressure')
+        self.graph.add((obs, RDF.type, SOSA.Observation))
+        self.graph.add((obs, SOSA.observedProperty, sensorObs))
+        self.graph.add((obs, SOSA.hasFeatureOfInterest, self.earthAtmosphere))
+        self.graph.add((obs, SOSA.madeBySensor, self.sensor))
+        self.graph.add((obs, SOSA.hasSimpleResult, Literal(value, datatype=CDT['ucum'])))
+        self.graph.add((obs, SOSA.resultTime, Literal(time, datatype=XSD['dateTime'])))
+        self.lastObsId += 1
 
     def msgCallBack(self, client, userdata, message):
         self.mutex.acquire()
+        self.nbrMsg += 1
         self.lastActivity = time.time()
         self.mutex.release()
-        print(f"\nmessage payload: {message.payload.decode('utf-8')}")
-        print(f"message topic: {message.topic}")
-        print(f"message qos: {message.qos}")
-        print(f"message retain flag: {message.retain}")
+        [reading, dt] = message.payload.decode('utf-8').split('|')
+        self.publishInGraph(reading, dt)
 
     def run(self):
         try:
@@ -56,6 +98,7 @@ class Subscriber():
             while (self.isRunning):
                 self.mutex.acquire()
                 if (time.time() - self.lastActivity > self.timeout):
+                # if (time.time() - self.lastActivity > self.timeout or self.nbrMsg >= 10):
                     self.isRunning = False
                 self.mutex.release()
                 time.sleep(0.1) # set execution rate to avoid too many loop execution
@@ -68,6 +111,7 @@ class Subscriber():
 
         except Exception as err:
             print("An error occured: {}".format(err), file=sys.stderr)
+        print(self.graph.serialize(format='ttl').decode('u8'))
 
 def subscrib():
     subscriber = Subscriber()
