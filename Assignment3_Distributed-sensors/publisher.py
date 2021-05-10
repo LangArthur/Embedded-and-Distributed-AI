@@ -29,7 +29,7 @@ def publisher():
     try:
         client.connect(MQT_SERVER)
         client.loop_start()
-        client.subscribe(channel)
+        client.subscribe(channel, qos=2)
         print("Ready to publish.")
         # loop to send 10 messages
         for _ in range(10):
