@@ -23,20 +23,22 @@ def readSensorData():
     return message
 
 def publisher():
-    client = mqtt.Client("Subscriber")
+    client = mqtt.Client("Publisher")
     channel = "teds20/group07/pressure"
 
     try:
         client.connect(MQT_SERVER)
         client.loop_start()
         client.subscribe(channel)
-        print("Ready to publish")
+        print("Ready to publish.")
         # loop to send 10 messages
         for _ in range(10):
             message = readSensorData()
             print("Send: {}".format(message))
             client.publish(channel, message, qos=2)
             time.sleep(1)
+        time.sleep(4)
+        client.unsubscribe(channel)
         client.loop_stop()
         client.disconnect()
         print("Disconnected")
