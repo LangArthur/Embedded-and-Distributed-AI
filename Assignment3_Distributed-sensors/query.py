@@ -8,10 +8,11 @@
 
 from rdflib import Graph
 
-# PRESURRE_FILE = "https://www.wikidata.org/wiki/Special:EntityData/Q2831.ttl"
-PRESURRE_FILE = "pressure.ttl"
+PRESURRE_FILE = "pressure.ttl" # file where are pressure data
 
-def main():
+# @function query
+# read a presurre file and display the data
+def query():
     graph = Graph()
     graph.parse(PRESURRE_FILE, format="ttl")
     res = graph.query('''
@@ -27,4 +28,4 @@ def main():
     return 0
 
 if __name__ == '__main__':
-    main()
+    query()

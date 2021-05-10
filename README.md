@@ -22,6 +22,14 @@ Instructions:
 3. Copy the content of the Assignment2 repository into the folder just created.
 4. Run the second cell of the notebook in order to mount the drive and to be able to acces the "colabdrive" folder (#Mount Drive). Now you have acces to the dataset and the models you just copied.
 
+### Assignment 3
+
+In the assignment folders, you can find a requirements.txt with all the needed dependencies. We recommand to use pip to install them.
+
+```
+pip install -r requirements.txt
+```
+
 ## Assignment 1: Object detection
 
 this project is seperate in two differents problems
@@ -61,6 +69,18 @@ Pre-trained model: "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/featu
 
 The model from the Problem 1 was converted into a TF Lite model. The sized of the model was reduced from 18.7 MB to 16 MB. The compressed model classifies a single image in 0.07 and has an accuracy of 85.08%.
 
+## Assignemnt 3: Distributed Sensors and Sensor Data Enrichment
+
+This assignment simulate reading data from Iphone barometer.
+
+It is compose by tree elements:
+- publisher: the element that publish data from a simulate barometer.
+- subscriber: the element who subscribe and read the data from an mqtt server. The generated graph is store in the file presurre.ttf.
+- query: the element that read the value from presurre.ttf file and order them by date.
+
+### Bonus
+
+In bonus, we add a timeout for the subscriber, since it should stop after 10 messages, we thought that is a message is lost for any reason, the subscriber should still stop after a while.
 
 ## Authors
 

@@ -12,8 +12,10 @@ import sys
 import numpy
 import datetime
 
-MQT_SERVER = "test.mosquitto.org"
+MQT_SERVER = "test.mosquitto.org" # name of the server
 
+# @function readSensorData
+# simulate a read on a sensor and return random data.
 def readSensorData():
     mu, sigma = 1200.00, 1.0
     reading = f'{round(numpy.random.normal(mu, sigma), 2):.2f}'        
@@ -22,6 +24,8 @@ def readSensorData():
     message = f'{reading}|{dt}'
     return message
 
+# @publisher
+# main function that publish ten data from a sensor every seconds.
 def publisher():
     client = mqtt.Client("Publisher")
     channel = "teds20/group07/pressure"

@@ -28,7 +28,7 @@ class Subscriber():
         self.client = mqtt.Client("Subscriber") # mqtt client
         self.client.on_message = self.msgCallBack
         self.channel = "teds20/group07/pressure"
-        self.timeout = 5 # time of inactivity in second before shutdown
+        self.timeout = 30 # time of inactivity in second before shutdown
         self.lastActivity = time.time() # time of the last activity
         self.mutex = Lock()
         self.isRunning = False
@@ -75,7 +75,7 @@ class Subscriber():
         self.setGraphNamespace() # set all different namespace
         self.setGraphType() # set all types
 
-    # @publishInGraph
+    # @method publishInGraph
     # add the observation into the graph.
     # @param value: value of the observation
     # @param time: time of the observation
@@ -90,7 +90,7 @@ class Subscriber():
         self.graph.add((obs, SOSA.resultTime, Literal(time, datatype=XSD['dateTime'])))
         self.lastObsId += 1
 
-    # @msgCallBack
+    # @method msgCallBack
     # callback when a message is received
     def msgCallBack(self, client, userdata, message):
         self.mutex.acquire()
@@ -101,7 +101,7 @@ class Subscriber():
             [reading, dt] = message.payload.decode('utf-8').split('|')
             self.publishInGraph(reading, dt)
 
-    # @run
+    # @method run
     # function to start the subscriber
     def run(self):
         try:
