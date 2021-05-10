@@ -25,18 +25,20 @@ BASE = Namespace("http://example.org/data/") #TODO set this as a base
 class Subscriber():
 
     def __init__(self):
-        self.client = mqtt.Client("Subscriber")
+        self.client = mqtt.Client("Subscriber") # mqtt client
         self.client.on_message = self.msgCallBack
         self.channel = "teds20/group07/pressure"
-        self.timeout = 5
-        self.lastActivity = time.time()
+        self.timeout = 5 # time of inactivity in second before shutdown
+        self.lastActivity = time.time() # time of the last activity
         self.mutex = Lock()
         self.isRunning = False
-        self.graph = Graph()
+        self.graph = Graph() # rdf graph
         self.initGraph()
-        self.nbrMsg = 0
-        self.lastObsId = 1
+        self.nbrMsg = 0 # message counter
+        self.lastObsId = 1 # id for observations
 
+    # @method setGraphNamespace
+    # set all the namespace in the graph.
     def setGraphNamespace(self):
         self.graph.base = BASE
         self.graph.bind('rdf', RDF)
@@ -47,6 +49,8 @@ class Subscriber():
         self.graph.bind('qudt-unit-1-1', QUDTU11)
         self.graph.bind('cdt', CDT)
 
+    # @method setGraphType
+    # add all the used types to the graph.
     def setGraphType(self):
         # add earthAtmosphere
         self.earthAtmosphere = URIRef('earthAtmosphere')
@@ -65,10 +69,16 @@ class Subscriber():
         self.graph.add((self.iphone, RDFS.comment, Literal("IPhone 7 - IMEI 35-207306-844818-0 - John Doe", lang='en')))
         self.graph.add((self.iphone, SOSA.hosts, self.sensor))
 
+    # @method initGraph
+    # init the graph
     def initGraph(self):
         self.setGraphNamespace() # set all different namespace
         self.setGraphType() # set all types
 
+    # @publishInGraph
+    # add the observation into the graph.
+    # @param value: value of the observation
+    # @param time: time of the observation
     def publishInGraph(self, value, time):
         obs = URIRef('Observation/' + str(self.lastObsId))
         sensorObs = URIRef('sensor/35-207306-844818-0/BMP282/atmosphericPressure')
@@ -80,6 +90,8 @@ class Subscriber():
         self.graph.add((obs, SOSA.resultTime, Literal(time, datatype=XSD['dateTime'])))
         self.lastObsId += 1
 
+    # @msgCallBack
+    # callback when a message is received
     def msgCallBack(self, client, userdata, message):
         self.mutex.acquire()
         self.nbrMsg += 1
@@ -88,6 +100,8 @@ class Subscriber():
         [reading, dt] = message.payload.decode('utf-8').split('|')
         self.publishInGraph(reading, dt)
 
+    # @run
+    # function to start the subscriber
     def run(self):
         try:
             self.client.connect(MQT_SERVER)
@@ -113,6 +127,8 @@ class Subscriber():
             print("An error occured: {}".format(err), file=sys.stderr)
         print(self.graph.serialize(format='ttl').decode('u8'))
 
+# @function subscrib
+# main function who init and launch the subscriber
 def subscrib():
     subscriber = Subscriber()
     subscriber.run()
