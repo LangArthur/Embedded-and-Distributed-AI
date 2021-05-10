@@ -111,8 +111,7 @@ class Subscriber():
             print("Ready to listen.")
             while (self.isRunning):
                 self.mutex.acquire()
-                if (time.time() - self.lastActivity > self.timeout):
-                # if (time.time() - self.lastActivity > self.timeout or self.nbrMsg >= 10):
+                if (time.time() - self.lastActivity > self.timeout or self.nbrMsg >= 10):
                     self.isRunning = False
                 self.mutex.release()
                 time.sleep(0.1) # set execution rate to avoid too many loop execution
@@ -125,7 +124,8 @@ class Subscriber():
 
         except Exception as err:
             print("An error occured: {}".format(err), file=sys.stderr)
-        print(self.graph.serialize(format='ttl').decode('u8'))
+        # save file
+        self.graph.serialize(destination='pressure.ttl', format='turtle')
 
 # @function subscrib
 # main function who init and launch the subscriber
